@@ -211,13 +211,12 @@ function setStage(data) {
     allPlayers.querySelector('.stacked').innerHTML = "";
     plyrs.forEach(function (p) {
       var pl2 = pl.cloneNode(true);
-      pl2.innerHTML = `<span class="label secondary">${p.playerName}</span>`;
+      pl2.innerHTML = `<small class="button secondary cell small-6">${p.playerName}</small>`;
 
       if(pos > 6 && p.playerAbility) {
-
           pl2.classList.add('ability');
           pl2.dataset.ability = p.playerAbility.name;
-          pl2.innerHTML += `<span class="label">${p.playerAbility.name}</span>`
+          pl2.innerHTML += `<small class="button secondary hollow cell small-5">${p.playerAbility.name}</small>`
       }
 
       allPlayers.querySelector('.stacked').append(pl2);
@@ -239,10 +238,13 @@ function setStage(data) {
   }
 
   if (id === 'countdown') {
-    stat.innerText = "".concat(localStorage.gameTimer.toString().padStart(2, '0'), ":00");
-
+    let remainder = parseInt(localStorage.gameTimer) * 60 - Math.round((Date.now()-localStorage.gameTime)/1000);
+    stat.innerHTML = `${Math.round(remainder/60)-1}:${Math.round(remainder%60).toString().padStart(2,"0")}`;
+    timer = setInterval(moveTime, 1000);
     if (localStorage.playerType !== 'host') {
       actionButton.classList.add('host');
+
+
     }
   }
 
@@ -505,13 +507,14 @@ countdownDuration.addEventListener('keyup', function (ev) {
 });
 
 function moveTime() {
-  time = localStorage.gameTimer || time;
-  dur++;
-  stat.innerHTML = "".concat((time - 1 - Math.floor(dur / 60)).toString().padStart(2, '0'), ":").concat(Math.floor(60 - dur % 60).toString().padStart(2, '0'));
+  let remainder = (parseInt(localStorage.gameTimer-1) * 60) - Math.round((Date.now()-localStorage.gameTime)/1000);
 
-  if (time - Math.floor(dur / 60) === 0) {
-    clearInterval(timer);
-  }
+  if (localStorage.playerType !== 'host') {actionButton.classList.add('host');}
+  stat.innerHTML = `${Math.round(remainder/60)}:${Math.round(remainder%60).toString().padStart(2,"0")}`;
+
+  if(remainder === 0) { clearInterval(); actionButton.click()}
+
+
 }
 
 document.getElementById('reset').addEventListener('click', function (ev) {
@@ -541,6 +544,7 @@ function addPlayer() {
       }
     }
   };
+  document.getElementById("newPlayerName").value = ''
   gameConnection.send(JSON.stringify(nplayer));
 }
 

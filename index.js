@@ -120,12 +120,14 @@ const createGame = (data, ws) => {
     if (valid(game.gameId) === null || (!game.gameId && game.gameId.length === 5)) error = "Incorrect Format for Game Id. AlphaNumeric Characters Only (A-Z & 0-9)."
     if (valid(player.playerId) === null || player.playerId.length !== 8) error = "You are not a valid user; not you the person, you the request."
     if (player.playerName && valid(player.playerName)) players[player.playerId] = nPlayer
+    let time = new Date()
     let nData = {
         gameId: game.gameId,
         gameName: game.gameName,
         gameStage: 'options',
         gameOptionsSet: false,
         gameAbilities: true,
+        gameTime: Date.now(),
         gameTimer: 5,
         gameRandomized: [],
         players: {},
