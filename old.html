@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gift Swap</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        #controls {
+            position: fixed;
+            width: 80%;
+            bottom: 2rem;
+            left: 10%;
+        }
+
+        li {
+            text-transform: capitalize;
+        }
+
+        .listBlocker {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            z-index: 200;
+            background: rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        #nameList {
+            position: relative;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row" id="nameList">
+        <div class="listBlocker"></div>
+        <div class="s12 col">
+            <h1>Gift Swap</h1>
+            <p>Gift exchange made simple with a twist! Add the names and select whether bonus cards are available.
+                When
+                the list is complete click start</p>
+            <ul class="s12 collection" id="names">
+                <li class="addNames collection-item">
+                    There is no one in this list. Add someone below.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="controls">
+        <div class="s12">
+            <input type="text" name="name" id="name" placeholder="Santa" autocomplete="off">
+            <button id="add" class="add waves-effect waves-light btn teal" type="button" name="start">
+                <i class="material-icons left">person_add</i>
+                Add Name
+            </button>
+            <button id="start" class="start waves-effect waves-light btn red" type="button" name="start">
+                <i class="material-icons left">timelapse</i>
+                <span>Start</span>
+            </button>
+            <button id="options" class="options waves-effect waves-light btn grey lighten-1" type="button" name="start">
+                <i class="material-icons left">blur_off</i>
+                Cards <span>Disabled</span>
+            </button>
+        </div>
+    </div>
+
+
+    <!--
+
+    from multiple devices
+    store each name localStorage
+    One person hosts
+    People connect to host
+    List of people who have connected
+    host stores list locally
+    host can remove from list
+    host enables and disables cards
+
+    -->
+
+
+    <script>
+        let names = new Map()
+        let abilities = []
+        let players = []
+        let input = document.querySelector('input')
+        let button = document.querySelector('button.add')
+        let li = document.createElement('li')
+        let nameList = document.getElementById('names')
+        let first = document.querySelector('.addNames')
+        let options = document.querySelector('.options i')
+        let optionSpan = document.querySelector('.options span')
+        let start = document.querySelector('.start span')
+        let listBlocker = document.querySelector('.listBlocker')
+        let card = document.createElement('i')
+        let counterTimeout
+        li.classList.add('collection-item')
+        card.classList.add('material-icons', 'right')
+        let cardList = {
+            //Can't be traded with
+            'selective immunity': function () {
+
+            },
+            //Move two spaces toward last
+            'move back two': function () {
+
+            },
+            //Move two spaces toward first
+            'move ahead two': function () {
+
+            },
+            //Reverse entire list
+            'reverse list': function () {
+
+            },
+            //Last to go
+            'last one standing': function () {
+
+            },
+            //Can trade twice randomly
+            'double dip': function () {
+
+            },
+            //Can trade after all gifts are open
+            'opened up': function () {
+
+            },
+            //Give gift away; get no gift
+                'give away': function () {
+
+            },
+            'do the shuffle': function () {
+
+            }
+        }
+        let counter = 5
+        let startCounter = 0
+        let synth = window.speechSynthesis
+
+        button.onclick = function (event) {
+            let inputValue = input.value.toLowerCase().trim()
+            if (inputValue) {
+                if (names.get(inputValue) === undefined) {
+                    li = li.cloneNode()
+                    li.innerHTML = '<span>' + inputValue + '</span>'
+                    li.classList.remove('active')
+                    listFactory(li, inputValue)
+                    nameList.append(li)
+                    names.set(inputValue, {name: inputValue, card: false})
+                    event.preventDefault()
+                    readOut(inputValue + ' has been added to the list')
+                    if (first) first.remove()
+                }
+                input.value = ''
+                input.focus()
+            }
+        }
+        function listFactory (li, inputValue) {
+            li.ondblclick = function () {
+                names.delete(inputValue)
+                this.remove()
+                readOut(inputValue + ' has been removed from the list')
+                if (!names.size) {
+                    li = first
+                    nameList.append(li)
+                }
+            }
+            li.onclick = function () {
+                if(options.parentNode.classList.contains('enabled')) {
+                    if (this.classList.contains('active')) {
+                        this.classList.remove('active')
+                        this.querySelector('i').remove()
+                        names.set(inputValue, {name: inputValue, card: false})
+                        readOut(inputValue + ' has unselected a card')
+                    } else {
+                        card = card.cloneNode()
+                        card.innerHTML = 'beenhere'
+                        this.classList.add('active')
+                        this.append(card)
+                        readOut(inputValue + ' has selected a card')
+                        names.set(inputValue, {name: inputValue, card: true})
+                    }
+                } else {
+                    this.classList.remove('active')
+                    this.querySelector('i').remove()
+                    names.set(inputValue, {name: inputValue, card: false})
+                }
+            }
+        }
+        options.parentNode.onclick = function () {
+            console.log(options.innerText)
+            if (options.innerText === 'blur_on') {
+                options.innerText = 'blur_off'
+                optionSpan.innerText = 'Disabled'
+                options.parentNode.classList.remove('enabled', 'blue')
+                readOut('Cards Disabled')
+                options.parentNode.classList.add('grey')
+            } else {
+                options.innerText = 'blur_on'
+                optionSpan.innerText = 'Enabled'
+                options.parentNode.classList.add('enabled', 'blue')
+                options.parentNode.classList.remove('grey')
+                readOut('Cards Enabled')
+            }
+        }
+        function readOut (text) {
+            let utterThis = new SpeechSynthesisUtterance(text)
+            synth.speak(utterThis)
+            input.blur()
+        }
+        start.parentNode.onclick = function () {
+            if (start.innerText.toLowerCase() === 'start') {
+                start.innerText = 'Pause'
+                readOut('Game Started')
+                if (options.parentNode.classList.contains('enabled')) randomAbility()
+                listBlocker.style.display = 'block'
+                button.setAttribute('disabled', 'disabled')
+                options.parentNode.setAttribute('disabled', 'disabled')
+                counter = 5
+                startingGame()
+            } else {
+                start.innerText = 'Start'
+                readOut('Game Paused')
+                listBlocker.style.display = 'none'
+                button.removeAttribute('disabled')
+                clearTimeout(counterTimeout)
+                options.parentNode.removeAttribute('disabled')
+                counter = false
+            }
+        }
+        function randomAbility () {
+            for (let [key, value] of names.entries()) {
+                if (value.card) {
+                    let ability = assignAbilities(abilities)
+                    value = {name: key, card: ability[0]}
+                } else {
+                    value = {name: key, card: false}
+                }
+                names.set(key, value)
+            }
+        }
+        function assignAbilities (list) {
+            let cardRandomNumber = new Uint32Array(1)
+            window.crypto.getRandomValues(cardRandomNumber)
+            let randomNum = '0.' + cardRandomNumber[0].toString()
+            randomNum = Math.floor(randomNum * (list.length))
+            return list.splice(randomNum, 1)
+        }
+        function init () {
+            for (let [key, value] of Object.entries(cardList)) { abilities.push(key) }
+        }
+        function startingGame () {
+            for (let [key, value] of names.entries()) { players.push(key) }
+            nameList.innerHTML = ''
+
+            shufflePlayer()
+        }
+        function shufflePlayer () {
+            setTimeout(function () {
+                let person = assignAbilities(players)
+                let currentPlayer = names.get(person[0])
+                console.log(currentPlayer)
+                li = li.cloneNode()
+                li.innerHTML = ''
+                li.classList.remove('active')
+                listFactory(li, currentPlayer.name)
+
+                if(options.parentNode.classList.contains('enabled')) {
+
+                    if (!currentPlayer.card) {
+                        li.innerHTML = '<span>' + currentPlayer.name + '</span>'
+                        readOut(currentPlayer.name + ' chose not to select a card')
+                    }
+                    else {
+                        li.classList.add('active')
+                        li.innerHTML = '<span>' + currentPlayer.name + ' with card <strong>' + currentPlayer.card + '</strong></span>'
+                        card = card.cloneNode()
+                        card.innerHTML = 'beenhere'
+                        li.append(card)
+                        readOut(currentPlayer.name + 'with card' + currentPlayer.card)
+                    }
+                } else {
+                    li.innerHTML = '<span>' + currentPlayer.name +'</span>'
+                    readOut(currentPlayer.name)
+                }
+
+                nameList.append(li)
+                if (players.length) shufflePlayer()
+            }, 1000)
+        }
+        init()
+
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.js"></script>
+
+</body>
+</html>

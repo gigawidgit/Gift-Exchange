@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gift Exchange</title>
+
+</head>
+<body>
+
+<!--Build a Secret Santa / Gift Exchange App
+
+This app helps organize gift exchanges and adds some additional features to each players turn.
+
+A user is either a host or a participant.
+Hosts generate a unique identifier and a participant enters the unique identifier to join the exchange.
+The unique identifier is composed of lowercase and uppercase alpha characters.
+-->
+
+
+
+
+
+
+<p id='server-time'></p>
+<script>
+    const ws = new WebSocket(location.origin.replace(/^http/, 'ws'));
+    const el = document.getElementById('server-time');
+    ws.onmessage = function (event) {
+        el.innerHTML = 'The present time: ' + event.data;
+    };
+</script>
+</body>
+</html>

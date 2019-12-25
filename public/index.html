@@ -1,0 +1,377 @@
+
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foundation for Sites</title>
+    <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+
+
+
+<header class="grid-x grid-padding-y" id="gameDetails">
+    <div class="cell small-3 text-center">Gift Exchange</div>
+    <div class="small-3 cell"><small>Player Name</small><br><strong id="playerNameTag"></strong></div>
+    <div class="small-3 cell"><label>Game Name</label><strong id="gameNameTag"></strong></div>
+    <div class="small-3 cell"><label>Game id</label> <strong id="gameIdTag"></strong></div>
+</header>
+
+<section class="grid-container full">
+    <main class="grid-x grid-padding-y align-center align-top">
+        <article id="introPanel" class="small-11 cell">
+        
+            <h1>Introduction</h1>
+            <p>Welcome to the Gift Exchange Web App. Here you'll be able to coordinate with others while
+                exchanging gifts in a fun and interactive way. This platform allows you to join a game with others. You can
+                either opt
+                in or out for a special ability that may or may not give you a competitive edge.</p>
+        
+            <div class="alert callout hide" id="errorPanel"></div>
+            <div class="card"> 
+            <div class="button-group expanded">
+                <a class="button">Join</a>
+                <a class="button clear">Host</a>
+        
+                <a class="button clear">Spectate</a>
+            </div>
+        
+        <div class="card-section grid-x joining">
+        
+                        <div class="small-12 cell h j">
+                            <label>Your Name
+                                <input type="text" placeholder="Sam Smith, Sally Somethingoranother, etc" id="playerName">
+                            </label>
+                        </div>
+        
+                        <div class="small-12 cell h j s">
+                            <label>Game Code
+                                <input type="text" id="gameId">
+                            </label>
+                        </div>
+        
+                        <div class="small-12 cell h">
+                            <label>Name of Gift Exchange (optional)
+                                <input type="text" placeholder="Office Christmas Party, Family Get Together" id="gameName">
+                            </label>
+                        </div>
+        
+                        <div class="small-12 cell h j s">
+                            <label>Password (optional)
+                                <input type="text" placeholder="1234, aaaa, 0000, etc" id="gamePassword">
+                            </label>
+                        </div>
+        
+        </div>
+        
+        
+            </div>
+        
+        
+        </article>
+        <article id="optionsPanel" class="small-11 cell hide">
+        
+            <h1>Select Options</h1>
+            <p>Welcome to the game <em>Name</em>!<br> This page is where you will select whether or not you would like to
+                select a special ability. Beware, with great power comes great opportunity to experience something unexpected.
+            </p>
+        
+        
+            <div class="card"><!--options-->
+        <!-- - list abilities-->
+        <!-- - host-->
+        <!--   - set timer-->
+        <!--   - toggle abilities-->
+        <!-- - player-->
+        <!--   - toggle ability-->
+        
+        
+        
+        <a href="#" class="card-divider">View Abilities</a>
+        <div class="no-bullet grid-x grid-padding-x grid-padding-y card-section">
+            <div class="small-12 cell ">
+                <a class="button primary expanded">Last One Standing</a>
+                <p class="button hollow expanded">Last to choose</p>
+                <a class="button primary expanded">Front of the Line</a>
+                <p class="button hollow expanded">Moves to be the first to pick a gift</p>
+                <a class="button primary expanded">Can&#x27;t Touch This</a>
+                <p class="button hollow expanded">Person can choose whether or not they want to trade</p>
+                <a class="button primary expanded">Scramble!</a>
+                <p class="button hollow expanded">Randomizes remaining player&#x27;s positions</p>
+                <a class="button primary expanded">Give it Up Already</a>
+                <p class="button hollow expanded">Get No Gift - Give away to random other player</p>
+                <a class="button primary expanded">Redo</a>
+                <p class="button hollow expanded">Start Over; Gifts go back in the middle, everyone is assigned a new card, and the list is randomized again</p>
+                <a class="button primary expanded">Sike</a>
+                <p class="button hollow expanded">Like Can&#x27;t Touch This, the player has one opportunity to deny a trade.</p>
+            </div>
+        </div>
+        
+        
+        <a href="#" class="card-divider host">Game Options</a>
+        <div class="no-bullet card-section host hide ">
+        
+            <p>This is where you can select whether or not special abilities will be enabled for this game. In other words, this
+                could be used as names in a hat or, something more.</p>
+        
+            <div class="button-group stacked game">
+                <a class="button hollow success expanded">
+                    Enable Special Abilities
+                </a>
+                <a class="button hollow alert expanded">
+                    Disable Special Abilities
+                </a>
+        
+            </div>
+            <p>Choose how how many minutes players have to join the game before starting the game</p>
+            <input type="number" id="gameOptionsTimer" value="5">
+        </div>
+        
+        <div id="playerAbilities">
+            <a href="#" class="card-divider">Player Options</a>
+            <div class="no-bullet card-section hide ">
+        
+                <p>This is where you can select whether or not you would like to choose a random ability.</p>
+        
+                <div class="button-group stacked player">
+                    <a class="button hollow success expanded">
+                        Yes
+                        I would like to choose a random ability
+                    </a>
+                    <a class="button hollow alert expanded">
+                        No I'll skip having a special ability
+                    </a>
+        
+                </div>
+            </div>
+        </div>
+        
+        
+        <script>
+        
+        
+        
+        
+        
+        </script>
+        
+        
+        
+        
+        </div>
+        
+        </article>
+        <article id="countdownPanel" class="small-11 cell hide">
+            <h1>Countdown</h1>
+            <p>We're waiting for everyone to join the game. The timer below has been set as a cutoff point for others to join
+                the game. After the Host will confirm the Players and begin the randomization process.
+            </p>
+        
+            <div class="card">
+        
+            <div class="card-divider">Waiting for Players to join Game</div>
+            <div class="card-section text-center"><p><span class="stat">05:00</span><br> Minutes:Seconds</p></div>
+            <button class="button host pause paused">Start Timer</button>
+        
+        
+        
+        </div>
+        
+        </article>
+        <article id="confirmationPanel" class="small-11 cell hide">
+            <h1>Confirmation</h1>
+            <p>It looks like everyone is here. At this stage the host may need to add new people that do not have a device of
+                their own to sign in with.</p>
+        
+            <div class="card host">
+            <div class="card-divider">Add Player</div>
+            <div class="card-section hide">
+                <div class="grid-x grid-padding-x">
+                    <div class="small-12 cell">
+                        <label>Player Name
+                            <input type="text" placeholder="Office Christmas Part, Family Get Together"
+                                   id="newPlayerName">
+                        </label>
+                    </div>
+        
+                    <div class="small-12 cell">
+                        <label>Opt-In for Special Ability
+                            <input type="checkbox" id="newPlayerAbility" checked>
+                        </label>
+                    </div>
+        
+                    <div class="medium-12 cell button-group stacked">
+                        <button type="submit" class="button" id="newPlayerSubmit">Add Player</button>
+        
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+        
+        </article>
+        <article id="randomizationPanel" class="small-11 cell hide">
+            <h1>Randomization</h1>
+            <p>This is where we begin to mix things up. Names are now going to be randomized a few times using some fancy crypto
+                library. Too much information, but it makes it sound cool at least.</p>
+            <div class="card"><!--randomization-->
+        <!-- - roster-->
+        
+        <div class="card-divider">Randomization</div>
+        <div class="card-section hide">
+           Animate randomization process
+        </div>
+        
+        </div>
+        
+        </article>
+        <article id="assignmentPanel" class="small-11 cell hide">
+            <h1>Special Ability Assignment</h1>
+            <p>If you're seeing this message that means the Host has enabled Special Abilities for this game. Each player that
+                has chosen to select a random ability will now be assigned a special ability. There are some special abilities
+                that remain hidden until the player has chosen to share them with the room.</p>
+            <div class="card"><!--abilityassignment-->
+        <!-- - roster-->
+        
+        <!--<div class="card-divider">Assign Abilities</div>-->
+        <!--<div class="card-section hide">-->
+        <!--    <div class="grid-x grid-padding-x">-->
+        <!--        <div class="small-12 cell">-->
+        <!--            <label>Player Name-->
+        <!--                <input type="text" placeholder="Office Christmas Part, Family Get Together"-->
+        <!--                       id="newPlayerName">-->
+        <!--            </label>-->
+        <!--        </div>-->
+        
+        <!--        <div class="small-12 cell">-->
+        <!--            <label>Opt-In for Special Ability-->
+        <!--                <input type="checkbox" id="newPlayerAbility" checked>-->
+        <!--            </label>-->
+        <!--        </div>-->
+        
+        <!--        <div class="medium-12 cell button-group stacked">-->
+        <!--            <button type="submit" class="button" id="newPlayerSubmit">Add Player</button>-->
+        
+        <!--        </div>-->
+        <!--    </div>-->
+        <!--</div>-->
+        
+        </div>
+        
+        </article>
+        <article id="applicationPanel" class="small-11 cell hide">
+            <h1>Apply Special Abilities</h1>
+            <p>If anyone has been assigned a special ability that affects the timeline it will now be made known to the rest of
+                the players and applied to the order.</p>
+            <div class="card"><!--abilitiy application-->
+        <!-- - roster-->
+        <!--<div class="card-divider">Apply Abilities</div>-->
+        <!--<div class="card-section hide">-->
+        <!--    <div class="grid-x grid-padding-x">-->
+        <!--        <div class="small-12 cell">-->
+        <!--            <label>Player Name-->
+        <!--                <input type="text" placeholder="Office Christmas Part, Family Get Together"-->
+        <!--                       id="newPlayerName">-->
+        <!--            </label>-->
+        <!--        </div>-->
+        
+        <!--        <div class="small-12 cell">-->
+        <!--            <label>Opt-In for Special Ability-->
+        <!--                <input type="checkbox" id="newPlayerAbility" checked>-->
+        <!--            </label>-->
+        <!--        </div>-->
+        
+        <!--        <div class="medium-12 cell button-group stacked">-->
+        <!--            <button type="submit" class="button" id="newPlayerSubmit">Add Player</button>-->
+        
+        <!--        </div>-->
+        <!--    </div>-->
+        <!--</div>-->
+        
+        </div>
+        
+        </article>
+        <article id="cyclePanel" class="small-11 cell hide">
+            <h1>Let The Game Begin!</h1>
+            <p>Now we begin to cycle through the list of names one at a time until everyone has either picked a new gift from
+                the pile or swapped with someone else.</p>
+        
+        
+            <div class="card"><!--cycle players-->
+        <!-- - roster-->
+        <!--   - player disabled after turn-->
+        <!--   - player highlighted during turn-->
+        <div class="card-divider">Play Game</div>
+        <div class="card-section hide">
+            Cycle through list of players
+        </div>
+        
+        </div>
+        
+        </article>
+        <article id="commentPanel" class="small-11 cell hide">
+            <h1>Good Game!</h1>
+            <p>The list has been cycled through and now everyone has a gift. This is a moment to leave an optional comment for
+                everyone else playing the game.</p>
+            <div class="card"><!--comment-->
+        <!-- - players comment form-->
+        <div class="card-divider">Comment</div>
+        <div class="card-section">
+            <p>Comment Form</p>
+        </div>
+        
+        
+        </div>
+        
+        </article>
+        <article id="feedbackPanel" class="small-11 cell hide">
+            <h1>Feedback</h1>
+            <p>Here are some comments left by the people that have participated in this game. Thanks for playing along and we
+                will see you next game.</p>
+            <div class="card"><!--feedback-->
+        <!-- - list of comments-->
+        <div class="card-divider">Feedback</div>
+        <div class="card-section hide">
+           Loop through player comments
+        </div>
+        
+        </div>
+        
+        </article>
+        <article id="finPanel" class="small-11 cell hide text-center">
+        
+        
+            <h1>GAME OVER</h1>
+            <h2>Go Home</h2>
+        
+        
+        </article>
+        
+        <div id="playerSection" class="cell small-11 hide">
+            <div class="card-divider">Current Players in Game</div>
+            <div class="card-section button-group stacked">
+                <a href="#" class="button clear plyr"></a>
+            </div>
+        </div>
+        
+        <div id="actionButton" class="button success expanded">Join Game</div>
+        
+        
+    </main>
+</section>
+
+
+<footer class="grid-x">
+    <div class="cell small-12 text-center">©2019 <button class="button alert" id="reset">Reset</button></div>
+</footer>
+
+
+<script src="assets/js/app.js"></script>
+<script>
+
+
+</script>
+</body>
+</html>
