@@ -66,17 +66,12 @@ const updateGame = (data) => {
     game.player = game.players[p.playerId]
     game.players[p.playerId].playerAbility = p.playerAbility
 
-    if(g.gameStage === 'randomization'){
+    if(g.gameStage === 'assignment'){
         const plys = [... Object.values(game.players)]
         game.gameRandomized = randomize(plys,[])
-    }
-
-    if(g.gameStage === 'assignment'){
         Object.values(game.gameRandomized).map((obj,ind)=>{
             const rn = Math.floor(random()*abilities.length)
-            console.log(rn)
             const ability = abilities[rn];
-
             if (obj.playerAbility) {  obj.playerAbility = ability }
             return obj })
     }

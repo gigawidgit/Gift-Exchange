@@ -177,9 +177,6 @@ function randomString(s, f) {
 }
 
 function syncLocalStorage(data) {
-  console.log({
-    data: data
-  });
   return Object.entries(data).forEach(function (v) {
     return localStorage.setItem(v[0], _typeof(v[1]) === 'object' ? JSON.stringify(v[1]) : v[1].toString());
   });
@@ -206,15 +203,25 @@ function setStage(data) {
   });
   var id = localStorage.gameStage || "intro";
   var pos = actionButtonNames.indexOf(id);
-  var plyrs = Object.values(JSON.parse(localStorage.getItem('players')));
+  var rndm = JSON.parse(localStorage.gameRandomized)
+  var plyrs = (rndm.length) ? rndm : Object.values(JSON.parse(localStorage.players));
 
   if (plyrs.length > 1) {
     allPlayers.classList.remove('hide');
     allPlayers.querySelector('.stacked').innerHTML = "";
     plyrs.forEach(function (p) {
       var pl2 = pl.cloneNode(true);
-      pl2.innerText = p.playerName;
+      pl2.innerHTML = `<span class="label secondary">${p.playerName}</span>`;
+
+      if(pos > 6 && p.playerAbility) {
+
+          pl2.classList.add('ability');
+          pl2.dataset.ability = p.playerAbility.name;
+          pl2.innerHTML += `<span class="label">${p.playerAbility.name}</span>`
+      }
+
       allPlayers.querySelector('.stacked').append(pl2);
+
     });
   }
 
@@ -239,27 +246,26 @@ function setStage(data) {
     }
   }
 
+
+
   if (id === 'confirmation') {}
 
-  if (id === 'assignment') {
-    var ps = JSON.parse(localStorage.gameRandomized);
-    allPlayers.querySelectorAll('a').forEach(function (a, b) {
-      if (ps[b].playerAbility) {
-        a.classList.add('ability');
-        a.dataset.ability = ps[b].ability;
-      }
-
-      a.innerText = ps[b].playerName;
-    });
-  }
-
-  if (id === 'application') {
-    var _ps = JSON.parse(localStorage.gameRandomized);
-
-    allPlayers.querySelectorAll('a').forEach(function (a, b) {
-      a.innerText = _ps[b].playerName;
-    });
-  }
+  // if (id === 'assignment') {
+  //   var ps = JSON.parse(localStorage.gameRandomized);
+  //   allPlayers.querySelectorAll('a').forEach(function (a, b) {
+  //
+  //
+  //     a.innerText = ps[b].playerName;
+  //   });
+  // }
+  //
+  // if (id === 'application') {
+  //   var _ps = JSON.parse(localStorage.gameRandomized);
+  //
+  //   allPlayers.querySelectorAll('a').forEach(function (a, b) {
+  //     a.innerText = _ps[b].playerName;
+  //   });
+  // }
 
   if (id === 'cycle') {
     console.log(localStorage.gameRandomization);
@@ -362,7 +368,7 @@ function intro(rejoin) {
     retryInterval = setInterval(function () {
       console.log("Retrying: ".concat(count));
       if (count === 5) clearInterval(retryInterval);
-    }, 1000);
+    }, 2000);
     count++;
   };
 }
